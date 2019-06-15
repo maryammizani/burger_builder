@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Button from '../../../components/UI/Button/Button';
+import Spinner from '../../../components/UI/Spinner/Spinner';
 import classes from './ContactData.module.css';
 import axios from '../../../axios-orders';
 
@@ -39,6 +40,7 @@ class ContactData extends Component {
         axios.post('/orders.json', order)  //.json is required for firebase to function correctly
             .then(response => {
                 this.setState({ loading: false });
+                this.props.history.push('/');
             })
             .catch(error => {
                 this.setState({ loading: false });
@@ -46,10 +48,8 @@ class ContactData extends Component {
     }
 
     render () {
-        return (
-            <div className={classes.ContactData}>
-                <h4>Enter your contact data</h4>
-                <form>
+        let form = (
+            <form>
                     <input className={classes.Input} type="text" name="name" placeholder="Your Name"></input>
                     <input className={classes.Input} type="email" name="email" placeholder="Your Mail"></input>
                     <input className={classes.Input} type="text" name="street" placeholder="Street"></input>
@@ -58,6 +58,14 @@ class ContactData extends Component {
                         btnType="Success" 
                         clicked={this.orderHandler}> ORDER</Button>
                 </form>
+        );
+        if (this.state.loading) {
+            form = <Spinner />;
+        }
+        return (
+            <div className={classes.ContactData}>
+                <h4>Enter your contact data</h4>
+                {form}
             </div>
         );
     }
