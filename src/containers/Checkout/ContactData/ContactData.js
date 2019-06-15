@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Button from '../../../components/UI/Button/Button';
 import classes from './ContactData.module.css';
+import axios from '../../../axios-orders';
 
 class ContactData extends Component {
     state = {
@@ -9,7 +10,8 @@ class ContactData extends Component {
         address: {
             street: '',
             postalCode: ''
-        }
+        },
+        loading: false
     }
 
     orderHandler = (event) => {
@@ -19,6 +21,28 @@ class ContactData extends Component {
         // when clicking the submit button
      
         console.log(this.props.ingredients);
+        this.setState({ loading: true });
+        const order = {
+            ingredients: this.props.ingredients,
+            price: this.props.price,
+            customer: {
+                name: 'Max',
+                address: {
+                    street: 'Test',
+                    zipcode: '1234',
+                    country: 'Canada'
+                },
+                email: 'test@test.com'
+            },
+            deliveryMethod: 'fastest'
+        }
+        axios.post('/orders.json', order)  //.json is required for firebase to function correctly
+            .then(response => {
+                this.setState({ loading: false });
+            })
+            .catch(error => {
+                this.setState({ loading: false });
+            });
     }
 
     render () {
