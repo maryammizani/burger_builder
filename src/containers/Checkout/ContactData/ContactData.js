@@ -11,6 +11,16 @@ class ContactData extends Component {
             postalCode: ''
         }
     }
+
+    orderHandler = (event) => {
+        event.preventDefault();  // this is added temporarily
+        // to prevent sending an http post req 
+        // which is the default behaviour
+        // when clicking the submit button
+     
+        console.log(this.props.ingredients);
+    }
+
     render () {
         return (
             <div className={classes.ContactData}>
@@ -20,7 +30,9 @@ class ContactData extends Component {
                     <input className={classes.Input} type="email" name="email" placeholder="Your Mail"></input>
                     <input className={classes.Input} type="text" name="street" placeholder="Street"></input>
                     <input className={classes.Input} type="text" name="postal" placeholder="Postal Code"></input>
-                    <Button btnType="Success"> ORDER</Button>
+                    <Button 
+                        btnType="Success" 
+                        clicked={this.orderHandler}> ORDER</Button>
                 </form>
             </div>
         );
