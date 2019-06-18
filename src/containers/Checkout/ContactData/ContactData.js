@@ -84,6 +84,21 @@ class ContactData extends Component {
                 this.setState({ loading: false });
             });
     }
+    
+    inputChangedHandler = (event, inputIdentifier) => {
+        const updatedOrderForm = {
+            ...this.state.orderForm  // this will not do a deep clone
+        }
+        // Deep clone the name, street, ... objects 
+        // value will be deep cloned here, but the elementConfig will not be
+        // if you want to deep clone that, you had do one more level
+        const updatedFormElement = {
+            ...updatedOrderForm[inputIdentifier]
+        }
+        updatedFormElement.value = event.target.value;
+        updatedOrderForm[inputIdentifier] = updatedFormElement;
+        this.setState({orderForm : updatedOrderForm});
+    }
 
     render() {
         const formElemetArray = [];
@@ -100,7 +115,8 @@ class ContactData extends Component {
                         key={formElement.id}
                         elementType={formElement.config.elementType}
                         elementConfig={formElement.config.elementConfig}
-                        value={formElement.config.value}/>
+                        value={formElement.config.value}
+                        changed={(event) => this.inputChangedHandler(event, formElement.id)}/>
                 ))}
                 <Button
                     btnType="Success"
