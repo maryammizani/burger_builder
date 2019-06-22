@@ -45,7 +45,7 @@ class BurgerBuilder extends Component {
             .map(igKey => {
                 return ingredients[igKey];
             }).reduce((sum, el) => { return sum + el }, 0);
-        this.setState({ purchasable: sum > 0 })
+        return  sum > 0;
     }
 
     // 
@@ -73,27 +73,27 @@ class BurgerBuilder extends Component {
     }
 
     render() {
-        const disabledInfo = { ...this.props.ing };
+        const disabledInfo = { ...this.props.ings };
         for (let key in disabledInfo) {
             disabledInfo[key] = disabledInfo[key] <= 0;
         }
         let orderSummary = null;
         let burger = this.state.error ? <p>Ingredients can't be loaded</p> : <Spinner />;
-        if (this.props.ing) {
+        if (this.props.ings) {
             burger = (
                 <Aux>
-                    <Burger ingredients={this.props.ing} />
+                    <Burger ingredients={this.props.ings} />
                     <BuildControls
                         ingredientAdded={this.props.onIngerdientAdded}
                         ingredientRemoved={this.props.onIngerdientRemoved}
                         disabled={disabledInfo}
-                        purchasable={this.state.purchasable}
+                        purchasable={this.updatePurchaseState(this.props.ings)}
                         ordered={this.purchaseHandler}
                         price={this.props.price} />
                 </Aux>
             );
             orderSummary = <OrderSummary
-                ingredients={this.props.ing}
+                ingredients={this.props.ings}
                 price={this.props.price}
                 purchaseCancelled={this.purchaseCancelHandler}
                 purchaseContinued={this.purchaseContinueHandler} />;
@@ -116,7 +116,7 @@ class BurgerBuilder extends Component {
 // Defines which slice of reducer state we want to pass into BurgerBuilder comp
 const mapStateToProps = state => {
     return {
-        ing: state.ingredients,
+        ings: state.ingredients,
         price: state.totalPrice
     }
 }
