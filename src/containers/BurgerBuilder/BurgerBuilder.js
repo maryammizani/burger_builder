@@ -57,19 +57,7 @@ class BurgerBuilder extends Component {
         this.setState({ purchasing: false });
     }
     purchaseContinueHandler = () => {
-        //alert('Continue!');
-
-        const queryParams = [];
-        for (let i in this.state.ingredients) {
-            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
-
-        }
-        queryParams.push('price=' + this.state.totalPrice);
-        const queryString = queryParams.join('&');
-        this.props.history.push({
-            pathname: '/checkout',
-            search: '?' + queryString
-        });
+        this.props.history.push('/checkout');
     }
 
     render() {
@@ -132,8 +120,19 @@ const mapDispatchToProps = dispatch => {
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(BurgerBuilder, axios));
 
 
+// purchaseContinueHandler = () => {
+//     const queryParams = [];
+//     for (let i in this.state.ingredients) {
+//         queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
 
-
+//     }
+//     queryParams.push('price=' + this.state.totalPrice);
+//     const queryString = queryParams.join('&');
+//     this.props.history.push({
+//         pathname: '/checkout',
+//         search: '?' + queryString
+//     });
+// }
 
     // addIngredeintHandler = (type) => {
     //     const oldCount = this.state.ingredients[type];
