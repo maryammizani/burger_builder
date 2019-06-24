@@ -9,7 +9,9 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../axios-orders';
-import * as actionTypes from '../../store/actions';
+
+// If we don't write index.js below it is still ok because it will automatically choose index.js
+import * as burgerBuilderActions from '../../store/actions/index';
 
 
 
@@ -112,8 +114,8 @@ const mapStateToProps = state => {
 // Define Actions to be sent to dispatcher
 const mapDispatchToProps = dispatch => {
     return {
-        onIngerdientAdded: (ingName) => dispatch({type: actionTypes.ADD_INGREDIENT, ingredientName: ingName}),
-        onIngerdientRemoved: (ingName) => dispatch({type: actionTypes.REMOVE_INGREDIENT, ingredientName: ingName})
+        onIngerdientAdded: (ingName) => dispatch(burgerBuilderActions.addIngredients(ingName)),
+        onIngerdientRemoved: (ingName) => dispatch(burgerBuilderActions.removeIngredients(ingName))
     }
 }
 
