@@ -13,8 +13,6 @@ import axios from '../../axios-orders';
 // If we don't write index.js below it is still ok because it will automatically choose index.js
 import * as burgerBuilderActions from '../../store/actions/index';
 
-
-
 class BurgerBuilder extends Component {
     // constructor(props) {
     //     super(props);
@@ -23,21 +21,15 @@ class BurgerBuilder extends Component {
     state = {
         //ingredients: null,
         //totalPrice: 4,
-        purchasable: false,
+        //purchasable: false,
         purchasing: false,
-        loading: false,
-        error: false
+        //loading: false,
+        //error: false
     }
 
     componentDidMount() {
-        // console.log(this.props);
-        // axios.get('/ingredients.json')
-        //     .then(response => {
-        //         this.setState({ ingredients: response.data });
-        //     })
-        //     .catch(error => {
-        //         this.setState({error: true});
-        // });
+        //console.log(this.props);
+        this.props.onInitIngerdients();      
     }
 
 
@@ -68,7 +60,7 @@ class BurgerBuilder extends Component {
             disabledInfo[key] = disabledInfo[key] <= 0;
         }
         let orderSummary = null;
-        let burger = this.state.error ? <p>Ingredients can't be loaded</p> : <Spinner />;
+        let burger = this.props.error ? <p>Ingredients can't be loaded</p> : <Spinner />;
         if (this.props.ings) {
             burger = (
                 <Aux>
@@ -88,9 +80,9 @@ class BurgerBuilder extends Component {
                 purchaseCancelled={this.purchaseCancelHandler}
                 purchaseContinued={this.purchaseContinueHandler} />;
         }
-        if (this.state.loading) {
-            orderSummary = <Spinner />;
-        }
+        // if (this.state.loading) {
+        //     orderSummary = <Spinner />;
+        // }
 
         return (
             <Aux>
@@ -107,7 +99,8 @@ class BurgerBuilder extends Component {
 const mapStateToProps = state => {
     return {
         ings: state.ingredients,
-        price: state.totalPrice
+        price: state.totalPrice,
+        error: state.error
     }
 }
 
@@ -115,7 +108,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onIngerdientAdded: (ingName) => dispatch(burgerBuilderActions.addIngredients(ingName)),
-        onIngerdientRemoved: (ingName) => dispatch(burgerBuilderActions.removeIngredients(ingName))
+        onIngerdientRemoved: (ingName) => dispatch(burgerBuilderActions.removeIngredients(ingName)),
+        onInitIngerdients: () => dispatch(burgerBuilderActions.initIngredients())
     }
 }
 
